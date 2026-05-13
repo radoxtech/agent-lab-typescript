@@ -1,8 +1,9 @@
 interface StartScreenProps {
-  onStart: () => void;
+  onStartClassic: () => void;
+  onStartDeck: () => void;
 }
 
-export function StartScreen({ onStart }: StartScreenProps) {
+export function StartScreen({ onStartClassic, onStartDeck }: StartScreenProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-full p-6 bg-gray-50">
       <div className="text-center max-w-sm">
@@ -18,12 +19,20 @@ export function StartScreen({ onStart }: StartScreenProps) {
           </ul>
         </div>
 
-        <button
-          onClick={onStart}
-          className="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors"
-        >
-          Start Game
-        </button>
+        <div className="space-y-3">
+          <button
+            onClick={onStartClassic}
+            className="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors"
+          >
+            Start Classic Bingo
+          </button>
+          <button
+            onClick={onStartDeck}
+            className="w-full bg-gray-900 text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-gray-700 transition-colors"
+          >
+            Start Card Deck Shuffle
+          </button>
+        </div>
       </div>
     </div>
   );

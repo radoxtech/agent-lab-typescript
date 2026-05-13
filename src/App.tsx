@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { useBingoGame } from './hooks/useBingoGame';
+import { useCardDeckGame } from './hooks/useCardDeckGame';
 import { StartScreen } from './components/StartScreen';
 import { GameScreen } from './components/GameScreen';
+import { CardDeckScreen } from './components/CardDeckScreen';
 import { BingoModal } from './components/BingoModal';
+
+type AppMode = 'start' | 'bingo' | 'deck';
 
 function App() {
   const {
@@ -15,19 +20,64 @@ function App() {
     dismissModal,
   } = useBingoGame();
 
-  if (gameState === 'start') {
-    return <StartScreen onStart={startGame} />;
+  const {
+    currentCard,
+    successCount,
+    failCount,
+    drawCount,
+    nextCard,
+    resetDeck,
+  } = useCardDeckGame();
+
+  const [mode, setMode] = useState<AppMode>(() => (gameState === 'start' ? 'start' : 'bingo'));
+
+  const handleStartClassic = () => {
+    startGame();
+    setMode('bingo');
+  };
+
+  const handleStartDeck = () => {
+    resetDeck();
+    setMode('deck');
+  };
+
+  const handleBackFromBingo = () => {
+    resetGame();
+    setMode('start');
+  };
+
+  if (mode === 'start') {
+    return (
+      <StartScreen
+        onStartClassic={handleStartClassic}
+        onStartDeck={handleStartDeck}
+      />
+    );
+  }
+
+  if (mode === 'deck') {
+    return (
+      <CardDeckScreen
+        currentCard={currentCard}
+        successCount={successCount}
+        failCount={failCount}
+        drawCount={drawCount}
+        onFail={() => nextCard('fail')}
+        onSuccess={() => nextCard('success')}
+        onBack={() => setMode('start')}
+      />
+    );
   }
 
   return (
     <>
       <GameScreen
         board={board}
-        winningSquareIds={winningSquareIds}
-        hasBingo={gameState === 'bingo'}
-        onSquareClick={handleSquareClick}
-        onReset={resetGame}
-      />
+          winningSquareIds={winningSquareIds}
+          hasBingo={gameState === 'bingo'}
+          onSquareClick={handleSquareClick}
+          onReset={handleBackFromBingo}
+        />
       {showBingoModal && (
         <BingoModal onDismiss={dismissModal} />
       )}
