@@ -150,8 +150,7 @@ describe('bingoLogic', () => {
 
   describe('checkBingo', () => {
     it('should return null for board without enough squares', () => {
-      const board = generateBoard();
-      // Clear some squares to test edge case
+      const board = generateBoard().slice(0, 24);
       expect(checkBingo(board)).toBeNull();
     });
 
@@ -288,6 +287,26 @@ describe('bingoLogic', () => {
       expect(result).not.toBeNull();
     });
 
+    it('should detect four corners pattern', () => {
+      const board = generateBoard();
+      [0, 4, 20, 24].forEach((i) => {
+        board[i].isMarked = true;
+      });
+      const result = checkBingo(board);
+      expect(result).not.toBeNull();
+      expect(result?.type).toBe('corners');
+      expect(result?.index).toBe(0);
+      expect(result?.squares).toEqual([0, 4, 20, 24]);
+    });
+
+    it('should return null when only three corners are marked', () => {
+      const board = generateBoard();
+      [0, 4, 20].forEach((i) => {
+        board[i].isMarked = true;
+      });
+      expect(checkBingo(board)).toBeNull();
+    });
+
     it('should return the correct squares array for a winning line', () => {
       const board = generateBoard();
       [0, 1, 2, 3, 4].forEach((i) => {
@@ -353,6 +372,19 @@ describe('bingoLogic', () => {
       const result = getWinningSquareIds(winningLine);
       expect(result.size).toBe(5);
       [2, 7, 12, 17, 22].forEach((id) => {
+        expect(result.has(id)).toBe(true);
+      });
+    });
+
+    it('should handle corners winning line', () => {
+      const winningLine = {
+        type: 'corners' as const,
+        index: 0,
+        squares: [0, 4, 20, 24],
+      };
+      const result = getWinningSquareIds(winningLine);
+      expect(result.size).toBe(4);
+      [0, 4, 20, 24].forEach((id) => {
         expect(result.has(id)).toBe(true);
       });
     });

@@ -98,6 +98,13 @@ function getWinningLines(): BingoLine[] {
     squares: [4, 8, 12, 16, 20],
   });
 
+  // Four corners
+  lines.push({
+    type: 'corners',
+    index: 0,
+    squares: [0, 4, 20, 24],
+  });
+
   return lines;
 }
 
@@ -105,6 +112,10 @@ function getWinningLines(): BingoLine[] {
  * Check if there's a bingo and return the winning line(s)
  */
 export function checkBingo(board: BingoSquareData[]): BingoLine | null {
+  if (board.length < BOARD_SIZE * BOARD_SIZE) {
+    return null;
+  }
+
   const lines = getWinningLines();
 
   for (const line of lines) {
