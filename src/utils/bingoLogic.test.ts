@@ -60,6 +60,40 @@ describe('bingoLogic', () => {
       });
     });
 
+    it('should use a custom question pool when provided', () => {
+      const customPool = Array.from({ length: 24 }, (_, i) => `Custom Q${i + 1}`);
+      const board = generateBoard(customPool);
+      const texts = board.filter((s) => !s.isFreeSpace).map((s) => s.text);
+      texts.forEach((text) => {
+        expect(customPool).toContain(text);
+      });
+    });
+
+    it('should not use the default pool when a valid custom pool is provided', () => {
+      const customPool = Array.from({ length: 24 }, (_, i) => `Custom Q${i + 1}`);
+      const board = generateBoard(customPool);
+      const texts = board.filter((s) => !s.isFreeSpace).map((s) => s.text);
+      texts.forEach((text) => {
+        expect(questions).not.toContain(text);
+      });
+    });
+
+    it('should fall back to the default pool when the custom pool has fewer than 24 items', () => {
+      const tinyPool = ['Too', 'Short'];
+      const board = generateBoard(tinyPool);
+      const texts = board.filter((s) => !s.isFreeSpace).map((s) => s.text);
+      texts.forEach((text) => {
+        expect(questions).toContain(text);
+      });
+    });
+
+    it('should have 24 unique questions from a custom pool of exactly 24', () => {
+      const customPool = Array.from({ length: 24 }, (_, i) => `Q${i}`);
+      const board = generateBoard(customPool);
+      const texts = board.filter((s) => !s.isFreeSpace).map((s) => s.text);
+      expect(new Set(texts).size).toBe(24);
+    });
+
     it('should randomize question order between boards', () => {
       // Mock Math.random to make it deterministic for first call
       const originalRandom = Math.random;

@@ -137,7 +137,7 @@ function saveGameState(gameState: GameState, board: BingoSquareData[], winningLi
   }
 }
 
-export function useBingoGame(): BingoGameState & BingoGameActions {
+export function useBingoGame(questionPool?: string[]): BingoGameState & BingoGameActions {
   const loadedState = useMemo(() => loadGameState(), []);
 
   const [gameState, setGameState] = useState<GameState>(
@@ -162,10 +162,10 @@ export function useBingoGame(): BingoGameState & BingoGameActions {
   }, [gameState, board, winningLine]);
 
   const startGame = useCallback(() => {
-    setBoard(generateBoard());
+    setBoard(generateBoard(questionPool));
     setWinningLine(null);
     setGameState('playing');
-  }, []);
+  }, [questionPool]);
 
   const handleSquareClick = useCallback((squareId: number) => {
     setBoard((currentBoard) => {

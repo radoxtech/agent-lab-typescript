@@ -1,3 +1,8 @@
+// Re-export the default question pool for backwards compatibility
+export { defaultTheme } from './themes';
+export { themes } from './themes';
+export type { QuestionTheme } from './themes';
+
 export const questions: string[] = [
   "bikes to work",
   "has lived in another country",

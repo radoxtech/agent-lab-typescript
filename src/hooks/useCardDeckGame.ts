@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { questions } from '../data/questions';
 import { applyDeckResult, drawFromDeck, type DeckResult } from '../utils/cardDeckLogic';
 
@@ -18,8 +18,8 @@ interface CardDeckSessionState extends CardDeckGameState {
   drawPile: string[];
 }
 
-function createInitialState(): CardDeckSessionState {
-  const firstDraw = drawFromDeck([], questions);
+function createInitialState(pool: string[]): CardDeckSessionState {
+  const firstDraw = drawFromDeck([], pool);
   return {
     currentCard: firstDraw.currentCard,
     drawPile: firstDraw.drawPile,
@@ -29,8 +29,10 @@ function createInitialState(): CardDeckSessionState {
   };
 }
 
-export function useCardDeckGame(): CardDeckGameState & CardDeckGameActions {
-  const [deckState, setDeckState] = useState<CardDeckSessionState>(createInitialState);
+export function useCardDeckGame(questionPool?: string[]): CardDeckGameState & CardDeckGameActions {
+  const pool = useMemo(() => (questionPool && questionPool.length > 0 ? questionPool : questions), [questionPool]);
+
+  const [deckState, setDeckState] = useState<CardDeckSessionState>(() => createInitialState(pool));
 
   const nextCard = useCallback((result: DeckResult) => {
     setDeckState((current) => {
@@ -38,7 +40,7 @@ export function useCardDeckGame(): CardDeckGameState & CardDeckGameActions {
         { success: current.successCount, fail: current.failCount },
         result
       );
-      const nextDraw = drawFromDeck(current.drawPile, questions);
+      const nextDraw = drawFromDeck(current.drawPile, pool);
 
       return {
         ...current,
@@ -49,11 +51,11 @@ export function useCardDeckGame(): CardDeckGameState & CardDeckGameActions {
         drawCount: current.drawCount + 1,
       };
     });
-  }, []);
+  }, [pool]);
 
   const resetDeck = useCallback(() => {
-    setDeckState(createInitialState());
-  }, []);
+    setDeckState(createInitialState(pool));
+  }, [pool]);
 
   return {
     currentCard: deckState.currentCard,
