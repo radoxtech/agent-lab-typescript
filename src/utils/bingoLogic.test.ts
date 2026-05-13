@@ -154,6 +154,11 @@ describe('bingoLogic', () => {
       expect(checkBingo(board)).toBeNull();
     });
 
+    it('should return null for a heavily incomplete board', () => {
+      const board = generateBoard().slice(0, 10);
+      expect(checkBingo(board)).toBeNull();
+    });
+
     it('should return null when no lines are complete', () => {
       const board = generateBoard();
       expect(checkBingo(board)).toBeNull();
