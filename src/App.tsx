@@ -5,8 +5,12 @@ import { StartScreen } from './components/StartScreen';
 import { GameScreen } from './components/GameScreen';
 import { CardDeckScreen } from './components/CardDeckScreen';
 import { BingoModal } from './components/BingoModal';
+import { themes, defaultTheme } from './data/questions';
+import type { QuestionTheme } from './data/questions';
 
 function App() {
+  const [selectedTheme, setSelectedTheme] = useState<QuestionTheme>(defaultTheme);
+
   const {
     gameState,
     board,
@@ -16,7 +20,7 @@ function App() {
     handleSquareClick,
     resetGame,
     dismissModal,
-  } = useBingoGame();
+  } = useBingoGame(selectedTheme.questions);
 
   const {
     currentCard,
@@ -25,7 +29,7 @@ function App() {
     drawCount,
     nextCard,
     resetDeck,
-  } = useCardDeckGame();
+  } = useCardDeckGame(selectedTheme.questions);
 
   const [mode, setMode] = useState<'start' | 'deck'>('start');
 
@@ -46,6 +50,9 @@ function App() {
   if (mode === 'start' && gameState === 'start') {
     return (
       <StartScreen
+        themes={themes}
+        selectedTheme={selectedTheme}
+        onSelectTheme={setSelectedTheme}
         onStartClassic={handleStartClassic}
         onStartDeck={handleStartDeck}
       />
@@ -59,6 +66,7 @@ function App() {
         successCount={successCount}
         failCount={failCount}
         drawCount={drawCount}
+        theme={selectedTheme}
         onFail={() => nextCard('fail')}
         onSuccess={() => nextCard('success')}
         onBack={() => setMode('start')}
@@ -72,6 +80,7 @@ function App() {
         board={board}
         winningSquareIds={winningSquareIds}
         hasBingo={gameState === 'bingo'}
+        theme={selectedTheme}
         onSquareClick={handleSquareClick}
         onReset={handleBackFromBingo}
       />
