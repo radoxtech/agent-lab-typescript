@@ -7,7 +7,6 @@ import { CardDeckScreen } from './components/CardDeckScreen';
 import { BingoModal } from './components/BingoModal';
 
 type AppMode = 'start' | 'bingo' | 'deck';
-type NavigationMode = 'start' | 'deck';
 
 function App() {
   const {
@@ -30,7 +29,7 @@ function App() {
     resetDeck,
   } = useCardDeckGame();
 
-  const [mode, setMode] = useState<NavigationMode>('start');
+  const [mode, setMode] = useState<'start' | 'deck'>('start');
   const activeMode: AppMode = mode === 'deck'
     ? 'deck'
     : gameState === 'start'
