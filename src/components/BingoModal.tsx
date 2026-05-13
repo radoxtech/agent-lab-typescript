@@ -4,19 +4,20 @@ interface BingoModalProps {
   onDismiss: () => void;
 }
 
+const SHARE_MESSAGE = '🎉 BINGO! I got a line in Bingo Mixer! Try it out!';
+
 export function BingoModal({ onDismiss }: BingoModalProps) {
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const text = '🎉 BINGO! I got a line in Bingo Mixer! Try it out!';
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share({ title: 'Bingo Mixer', text });
+        await navigator.share({ title: 'Bingo Mixer', text: SHARE_MESSAGE });
       } catch {
         // user cancelled — that's fine
       }
     } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(SHARE_MESSAGE);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
