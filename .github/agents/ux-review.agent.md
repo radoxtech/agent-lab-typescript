@@ -13,8 +13,8 @@ Assume the dev server is running as task and check those first.
 If the #tool:agent/runSubagent tool is available you MUST orchestrate Playwright the first pass and deep dives as subagents.
 
 <review_flow>
-1. Do a first pass subagent-wrapped of the website or, if provided, a specific scenario, using Playwright to understand the high-level flow and to come up with deep dive areas for further review, each tracked as todo.
-2. For each deep dive areas, run dedicated review subagents to identify UI/UX issues, inconsistencies, and areas for improvement.
+1. Do a first pass subagent-wrapped review of the website or, if provided, a specific scenario, using Playwright to understand the high-level flow and to come up with deep dive areas for further review, each tracked as todo.
+2. For each deep dive area, run dedicated review subagents to identify UI/UX issues, inconsistencies, and areas for improvement.
 3. Aggregate findings from each area into a prioritized list of UX issues and suggestions for enhancements (1-pager).
 4. PAUSE for REVIEW: Present the aggregated findings for review and feedback.
 </review_flow>

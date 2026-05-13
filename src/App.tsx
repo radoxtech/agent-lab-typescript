@@ -73,11 +73,11 @@ function App() {
     <>
       <GameScreen
         board={board}
-          winningSquareIds={winningSquareIds}
-          hasBingo={gameState === 'bingo'}
-          onSquareClick={handleSquareClick}
-          onReset={handleBackFromBingo}
-        />
+        winningSquareIds={winningSquareIds}
+        hasBingo={gameState === 'bingo'}
+        onSquareClick={handleSquareClick}
+        onReset={handleBackFromBingo}
+      />
       {showBingoModal && (
         <BingoModal onDismiss={dismissModal} />
       )}
