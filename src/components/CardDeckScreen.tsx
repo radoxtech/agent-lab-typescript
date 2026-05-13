@@ -48,14 +48,14 @@ export function CardDeckScreen({
             aria-label="Mark as fail"
             className="bg-rose-500 text-white font-semibold py-3 rounded-lg active:bg-rose-400 transition-colors"
           >
-            ← Fail
+            ✗ Fail
           </button>
           <button
             onClick={onSuccess}
             aria-label="Mark as success"
             className="bg-emerald-600 text-white font-semibold py-3 rounded-lg active:bg-emerald-500 transition-colors"
           >
-            Success →
+            ✓ Success
           </button>
         </div>
 
