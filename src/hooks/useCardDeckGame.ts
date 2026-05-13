@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { questions } from '../data/questions';
-import { applyDeckResult, drawRandomQuestion, type DeckResult } from '../utils/cardDeckLogic';
+import { drawRandomQuestion, type DeckResult } from '../utils/cardDeckLogic';
 
 export interface CardDeckGameState {
   currentCard: string;
@@ -21,12 +21,14 @@ export function useCardDeckGame(): CardDeckGameState & CardDeckGameActions {
   const [drawCount, setDrawCount] = useState(1);
 
   const nextCard = useCallback((result: DeckResult) => {
-    const updated = applyDeckResult({ success: successCount, fail: failCount }, result);
-    setSuccessCount(updated.success);
-    setFailCount(updated.fail);
+    if (result === 'success') {
+      setSuccessCount((count) => count + 1);
+    } else {
+      setFailCount((count) => count + 1);
+    }
     setCurrentCard(drawRandomQuestion(questions));
     setDrawCount((count) => count + 1);
-  }, [successCount, failCount]);
+  }, []);
 
   const resetDeck = useCallback(() => {
     setSuccessCount(0);

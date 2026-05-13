@@ -31,6 +31,8 @@ function App() {
 
   const [mode, setMode] = useState<AppMode>(() => (gameState === 'start' ? 'start' : 'bingo'));
 
+  const activeMode: AppMode = mode === 'bingo' && gameState === 'start' ? 'start' : mode;
+
   const handleStartClassic = () => {
     startGame();
     setMode('bingo');
@@ -46,7 +48,7 @@ function App() {
     setMode('start');
   };
 
-  if (mode === 'start') {
+  if (activeMode === 'start') {
     return (
       <StartScreen
         onStartClassic={handleStartClassic}
@@ -55,7 +57,7 @@ function App() {
     );
   }
 
-  if (mode === 'deck') {
+  if (activeMode === 'deck') {
     return (
       <CardDeckScreen
         currentCard={currentCard}

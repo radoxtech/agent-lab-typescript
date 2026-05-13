@@ -31,7 +31,7 @@ export function CardDeckScreen({
       </header>
 
       <p className="text-center text-gray-500 text-sm py-2 px-4">
-        Draw #{drawCount}: decide with fail/success and get another random card.
+        Draw #{drawCount}: mark fail or success based on your result, then get another random card.
       </p>
 
       <div className="flex-1 flex items-center justify-center p-4">
