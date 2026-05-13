@@ -6,8 +6,6 @@ import { GameScreen } from './components/GameScreen';
 import { CardDeckScreen } from './components/CardDeckScreen';
 import { BingoModal } from './components/BingoModal';
 
-type AppMode = 'start' | 'bingo' | 'deck';
-
 function App() {
   const {
     gameState,
@@ -30,11 +28,6 @@ function App() {
   } = useCardDeckGame();
 
   const [mode, setMode] = useState<'start' | 'deck'>('start');
-  const activeMode: AppMode = mode === 'deck'
-    ? 'deck'
-    : gameState === 'start'
-      ? 'start'
-      : 'bingo';
 
   const handleStartClassic = () => {
     startGame();
@@ -50,7 +43,7 @@ function App() {
     setMode('start');
   };
 
-  if (activeMode === 'start') {
+  if (mode === 'start' && gameState === 'start') {
     return (
       <StartScreen
         onStartClassic={handleStartClassic}
@@ -59,7 +52,7 @@ function App() {
     );
   }
 
-  if (activeMode === 'deck') {
+  if (mode === 'deck') {
     return (
       <CardDeckScreen
         currentCard={currentCard}
