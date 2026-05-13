@@ -45,12 +45,14 @@ export function CardDeckScreen({
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={onFail}
+            aria-label="Mark as fail"
             className="bg-rose-500 text-white font-semibold py-3 rounded-lg active:bg-rose-400 transition-colors"
           >
             ← Fail
           </button>
           <button
             onClick={onSuccess}
+            aria-label="Mark as success"
             className="bg-emerald-600 text-white font-semibold py-3 rounded-lg active:bg-emerald-500 transition-colors"
           >
             Success →
